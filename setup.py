@@ -146,7 +146,7 @@ if __name__ == '__main__':
     setup(
         author='CERN',
         author_email='admin@inspirehep.net',
-        install_requires=['jsonschema'],
+        install_requires=['jsonschema', 'autosemver'],
         license='GPLv2',
         name='inspire-schemas',
         package_data={'': ['*.json', 'CHANGELOG', 'AUTHORS']},
