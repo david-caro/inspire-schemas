@@ -77,6 +77,12 @@ class LiteratureBuilder(object):
         self.obj = {}
         self.source = source
 
+    def __str__(self):
+        return str(self.obj)
+
+    def __repr__(self):
+        return '<source:%s, obj:%s>' % (self.source, self.obj)
+
     def _ensure_field(self, field_name, value, obj=None):
         if obj is None:
             obj = self.obj
@@ -88,6 +94,23 @@ class LiteratureBuilder(object):
         if source is not None:
             return source
         return self.source
+
+    def add_if_non_epty(self, property, **kwargs):
+        EMPTIES = [None, '', [], {}]
+        mykwargs = {}
+        for key, value in kwargs.items():
+            if value in EMPTIES:
+                continue
+            mykwargs[key] = value
+
+        if not mykwargs:
+            return
+
+        myfunc = getattr(self, 'add_' + property, None)
+        if myfunc is None:
+            raise Exception('Builder does not have method add_' + property)
+
+        return myfunc(**mykwargs)
 
     def validate_object(self):
         """Validate the record in according to the hep schema."""
